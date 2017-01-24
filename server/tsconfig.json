@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "module": "commonjs",
+    "target": "es5",
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "rootDir": "src",
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true,
+     "watch": true
+  },
+  "exclude": [
+    "build"
+  ],
+  "types": [
+    "typePatches"
+  ]
+}
