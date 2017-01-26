@@ -89,6 +89,18 @@ var getDetailsData = function (cookie, start, end) {
         });
     });
 };
+app.post('/login', function (req, res) {
+    var body = req.body;
+    login(body.user, body.password)
+        .then(function (cookie) {
+        if (cookie) {
+            res.send(200);
+        }
+        else {
+            res.send(401);
+        }
+    });
+});
 app.post('/data/summary', function (req, res) {
     var body = req.body;
     login(body.user, body.password)

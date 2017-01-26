@@ -13,11 +13,11 @@ namespace hydra {
     }
 
     export interface summaryResponse {
-        results: summaryData[];
+        results: summaryDatum[];
         success: boolean;
     }
 
-    export interface summaryData {
+    export interface summaryDatum {
         dateFinPeriode: string;
         dateDebutPeriode: string;
         dateDerniereLecturePeriode: string;
@@ -62,11 +62,11 @@ namespace hydra {
     }
 
     export interface detailsResponse {
-        results: detailsData[]
+        results: detailsDatum[]
         success: boolean;
     }
 
-    export interface detailsData {
+    export interface detailsDatum {
         courant: {
             dateJourConso: string;
             codeJourSemaine: number;

@@ -6,7 +6,7 @@ import hydra from './interfaces';
 
 import './css/Login.css';
 
-class Login extends React.Component<{ callback: (code: number) => void }, any> {
+class Login extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
         this.state = {
@@ -37,9 +37,11 @@ class Login extends React.Component<{ callback: (code: number) => void }, any> {
             console.log("Auth requirements not satisfied")
         }
 
-        restHelper.login(this.state.user, this.state.password).then(code => {
-            this.props.callback(code);
-        });        
+        restHelper.login(this.state.user, this.state.password)
+            .then(() => {
+                    this.props.router.replace("/");
+                }
+            );
     }
 }
 

@@ -1,4 +1,5 @@
 import * as request from "request-promise";
+import hydra from './interfaces';
 
 class restHelper {
     static debugServerURI = "http://localhost:3001";
@@ -10,60 +11,78 @@ class restHelper {
         return this._loggedIn;
     }
 
-    static login(user: string, password: string): Promise<number> {
+    static login(user: string, password: string): Promise<{}> {
         const uri = `${this.debugServerURI}/login`;
         let code = 500;
-        request(
-            {
-                uri,
-                method: "POST",
-                body: JSON.stringify({ user: user, password: password })
-            })
-            .then(code => {
-                if (code === 200) {
+        return new Promise((res, rej) => {
+            request(
+                {
+                    uri,
+                    method: "POST",
+                    body: JSON.stringify({ user: user, password: password }),
+                    headers: {
+                        "content-type": 'application/json'
+                    }
+                })
+                .then(() => {
                     this._user = user;
                     this._password = password;
                     this._loggedIn = true;
-                }
-            });
-
-        return Promise.resolve(code);
+                    res();
+                })
+                .catch(() => {
+                    rej();
+                });
+        });
     }
 
 
-    static summary(): request.RequestPromise {
+    static summary(): Promise<hydra.summaryResponse> {
         if (!this.isLoggedIn()) {
             return null;
         }
 
         const uri = `${this.debugServerURI}/data/summary`;
-        return request(
-            {
-                uri,
-                method: "POST",
-                body: JSON.stringify({ user: this._user, password: this._password }),
-                headers: {
-                    "content-type": 'application/json'
-                },
-            });
+        return new Promise((res, rej) => {
+            request(
+                {
+                    uri,
+                    method: "POST",
+                    body: JSON.stringify({ user: this._user, password: this._password }),
+                    headers: {
+                        "content-type": 'application/json'
+                    },
+                })
+                .then(value => {
+                    res(JSON.parse(value));
+                })
+                .catch(error => rej(error));
+        });
     }
 
-    static details(start: Date, end: Date): request.RequestPromise {
+    static details(start: Date, end: Date): Promise<hydra.detailsResponse> {
         if (!this.isLoggedIn()) {
             return null;
         }
 
         const uri = `${this.debugServerURI}/data/details`;
         const data = JSON.stringify({ user: this._user, password: this._password, start, end });
-        return request(
-            {
-                uri,
-                method: "POST",
-                body: data,
-                headers: {
-                    "content-type": 'application/json',
-                }
-            });
+         
+          return new Promise((res, rej) => {
+            request(
+                {
+                    uri,
+                    method: "POST",
+                    body: data,
+                    headers: {
+                        "content-type": 'application/json'
+                    },
+                })
+                .then(value => {
+                    res(JSON.parse(value));
+                })
+                .catch(error => rej(error));
+        });
     }
 }
 
