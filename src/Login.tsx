@@ -6,14 +6,27 @@ import hydra from './interfaces';
 
 import './css/Login.css';
 
-class Login extends React.Component<any, any> {
+class Login extends React.Component<any, { user: string, password: string }> {
     constructor(props: any) {
         super(props);
-        this.state = {
-            user: "",
-            password: ""
-        };
+        
+        //autologin for debug purposes
+        const localCredentials = localStorage.getItem("credentials");
+        if (localCredentials) {
+            const parsedCredentials = JSON.parse(localCredentials);
+            this.state = { user: parsedCredentials.user, password: parsedCredentials.password };
+            
+            this.login();
+        }
+
+        else {
+            this.state = {
+                user: "",
+                password: ""
+            };
+        }
     }
+
 
     render() {
         return (
@@ -31,24 +44,29 @@ class Login extends React.Component<any, any> {
         this.setState({ password: (e.target as HTMLElement).value });
     }
 
-    login = (e: Event) => {
-        e.preventDefault();
+    login = (e?: Event) => {
+
+        if (e) {
+            e.preventDefault();
+        }
+
         if (!this.state.user || !this.state.password) {
-            console.log("Auth requirements not satisfied")
+            console.log("Auth requirements not satisfied");
+            return;
         }
 
         restHelper.login(this.state.user, this.state.password)
             .then(() => {
-                    this.props.router.replace("/");
-                }
-            );
+                localStorage.setItem("credentials", JSON.stringify({ user: this.state.user, password: this.state.password }));
+                this.props.router.replace("/");
+            });
     }
 }
 
 class LoginInput extends React.Component<any, any> {
     render() {
         return (
-            < input type={this.props.type} onChange={this.props.onChange.bind(this)} placeholder={this.props.placeholder} />
+            < input type={this.props.type} onChange={this.props.onChange.bind(this)} placeholder={this.props.placeholder} autoFocus={this.props.type === "text"} />
         )
     }
 }
