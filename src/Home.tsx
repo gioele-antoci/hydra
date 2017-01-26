@@ -22,7 +22,7 @@ class Home extends React.Component<any, { type: hydra.selectorType, summaryData?
             callback: () => { this.setState({ type: hydra.selectorType.dailyConsumption }) }
         }
     ];
-    
+
     constructor(props) {
         super(props);
         this.state = { type: hydra.selectorType.temperatureChart };
@@ -83,7 +83,7 @@ class Home extends React.Component<any, { type: hydra.selectorType, summaryData?
                 return (<TemperatureChart data={this.state.detailsData} />)
 
             case hydra.selectorType.dailyConsumption:
-                return (<DailyConsumptionChart />)
+                return (<DailyConsumptionChart data={this.state.detailsData}/>)
         }
     }
 }
