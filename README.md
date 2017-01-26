@@ -1,5 +1,7 @@
 # Hydra
 
+![Latest development screenshot](public/screenshot.PNG)
+
 Hydro Quebec has installed network-connected meters and provides on its website a log of the records.   
 As a data-lover, chart fanatic engineer, although excited for the availability of such data,
 I would like to see more elaborated, easy-to-read, exciting data visualization.
