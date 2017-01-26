@@ -1,6 +1,4 @@
-"use strict";
-
-import request = require('request');
+var request = require('request');
 import bodyParser = require('body-parser')
 import cors = require('cors')
 
@@ -17,7 +15,7 @@ app.use(bodyParser.json());
 bodyParser.urlencoded({ extended: true });
 
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
-request.defaults({ "proxy": 'http://127.0.0.1:8888' });
+request = request.defaults({ "proxy": 'http://127.0.0.1:8888' });
 
 const login = (user: string, password: string) => {
     return new Promise<string>((resolve, reject) => {
@@ -84,8 +82,7 @@ const getSummaryData = (cookie: string) => {
 const getDetailsData = (cookie: string, start: Date, end: Date) => {
     return new Promise((resolve, reject) => {
         request.get({
-            url: `https://www.hydroquebec.com/portail/fr/group/clientele/portrait-de-consommation?p_p_id=portraitConsommation_WAR_lswrb_INSTANCE_G4WcPdIy6LKl&p_p_lifecycle=2&
-            p_p_resource_id=resourceObtenirDonneesQuotidiennesConsommation&dateDebutPeriode=${moment(start).format("YYYY-MM-DD")}&dateFinPeriode=${moment(end).format("YYYY-MM-DD")}`,
+            url: `https://www.hydroquebec.com/portail/fr/group/clientele/portrait-de-consommation?p_p_id=portraitConsommation_WAR_lswrb_INSTANCE_G4WcPdIy6LKl&p_p_lifecycle=2&p_p_resource_id=resourceObtenirDonneesQuotidiennesConsommation&dateDebutPeriode=${moment(end).format("YYYY-MM-DD")}&dateFinPeriode=${moment(start).format("YYYY-MM-DD")}`,
             method: "GET",
             headers: {
                 'Cookie': cookie
@@ -102,6 +99,19 @@ const getDetailsData = (cookie: string, start: Date, end: Date) => {
         });
     });
 }
+
+app.post('/login', (req, res) => {
+    const body = req.body;
+    login(body.user, body.password)
+        .then(cookie => {
+            if (cookie) {
+                res.send(200);
+            }
+            else {
+                res.send(401);
+            }
+        });
+});
 
 
 app.post('/data/summary', (req, res) => {

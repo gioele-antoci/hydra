@@ -1,4 +1,5 @@
 {
+"compileOnSave": true,  
   "compilerOptions": {
     "outDir": "dist",
     "module": "commonjs",
@@ -6,9 +7,7 @@
     "sourceMap": true,
     "moduleResolution": "node",
     "rootDir": "src",
-    "noImplicitAny": true,
-    "suppressImplicitAnyIndexErrors": true,
-     "watch": true
+    "suppressImplicitAnyIndexErrors": true 
   },
   "exclude": [
     "build"

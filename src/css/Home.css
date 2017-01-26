@@ -1,0 +1,12 @@
+.page-root{
+    display:flex;
+}
+
+.left-column{
+   width: 10em;
+}
+
+.center-column{
+    flex: 1;
+    border: 1px solid;
+}

@@ -27,10 +27,12 @@
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
     "cors": "^2.8.1",
-    "moment": "^2.17.1"
-  },  
+    "moment": "^2.17.1",
+    "materialize-css": "^0.97.8"
+  },
   "scripts": {
-    "start": "react-scripts-ts start",
+    "start": "react-scripts-ts start",    
+    "poststart": "tsc -p server && npm server/dist/server.js",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"

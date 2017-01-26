@@ -1,0 +1,6 @@
+.list-item{
+cursor: pointer;
+padding: .5rem .3rem;
+border-top: 1px solid lightgrey;
+border-bottom: 1px solid lightgrey;
+}

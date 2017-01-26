@@ -1,9 +1,12 @@
 import * as React from 'react';
-import restHelper from './utils/restHelper';
 import * as moment from 'moment';
 
-class LoginForm extends React.Component<any, any> {
+import restHelper from './restHelper';
+import hydra from './interfaces';
 
+import './css/Login.css';
+
+class Login extends React.Component<{ callback: (code: number) => void }, any> {
     constructor(props: any) {
         super(props);
         this.state = {
@@ -14,7 +17,7 @@ class LoginForm extends React.Component<any, any> {
 
     render() {
         return (
-            <form onSubmit={this.retrieveData.bind(this)} >
+            <form onSubmit={this.login.bind(this)} >
                 <LoginInput type="text" placeholder="Enter username" onChange={this.handleUsernameChange} />
                 <LoginInput type="password" placeholder="Enter password" onChange={this.handlePasswordChange} />
                 <button type="submit">GO</button>
@@ -28,24 +31,15 @@ class LoginForm extends React.Component<any, any> {
         this.setState({ password: (e.target as HTMLElement).value });
     }
 
-    retrieveData = (e: Event) => {
+    login = (e: Event) => {
         e.preventDefault();
         if (!this.state.user || !this.state.password) {
             console.log("Auth requirements not satisfied")
         }
 
-        restHelper.summary(this.state.user, this.state.password).then((data: hydra.summaryResponse) => {
-            //do shit here
-
-
-        });
-
-        restHelper.details(this.state.user, this.state.password, moment().toDate(), moment().subtract(30, "days").toDate())
-            .then((data: hydra.detailsResponse) => {
-                //do shit here
-
-
-            });
+        restHelper.login(this.state.user, this.state.password).then(code => {
+            this.props.callback(code);
+        });        
     }
 }
 
@@ -57,4 +51,4 @@ class LoginInput extends React.Component<any, any> {
     }
 }
 
-export default LoginForm;
+export default Login;

@@ -1,5 +1,4 @@
 // import * as React from 'react';
-// import './App.css';
 
 // const logo = require('./logo.svg');
 
@@ -20,19 +19,24 @@
 // }
 
 // export default App;
-
-
 import * as React from 'react';
 import { Router, Route, browserHistory } from 'react-router';
 // import routes from './utils/routes'
-import LoginForm from "./Login"
+import Login from "./Login"
 import Home from "./Home"
 
-class App extends React.Component<any, any> {
+import './css/App.css';
+
+class App extends React.Component<any, { loggedIn: boolean }> {
+
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <Router history={browserHistory}>
-        <Route path="login" component={LoginForm} />
+        <Route path="login" component={Login} />
         <Route path="/" component={Home} />
       </Router>
     )

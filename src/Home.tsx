@@ -1,10 +1,61 @@
 import * as React from 'react';
+import Selector from './Selector';
+import TemperatureChart from './TemperatureChart';
+import DailyConsumptionChart from './DailyConsumptionChart';
 
-class Home extends React.Component<{}, any> {
+import restHelper from './restHelper';
+import hydra from './interfaces';
+
+import "./css/Home.css";
+
+class Home extends React.Component<any, { type: hydra.selectorType }> {
+    options: hydra.selectorOption[] = [
+        {
+            type: hydra.selectorType.temperatureChart,
+            value: "kw/h-Temperature",
+            callback: () => { this.setState({ type: hydra.selectorType.temperatureChart }) }
+        },
+        {
+            type: hydra.selectorType.dailyConsumption,
+            value: "Daily consumption",
+            callback: () => { this.setState({ type: hydra.selectorType.dailyConsumption }) }
+        }
+    ];
+
+    constructor(props) {
+        super(props);
+        this.state = { type: hydra.selectorType.temperatureChart };
+    }
+
+    componentWillMount() {
+        if (!restHelper.isLoggedIn()) {
+            this.props.router.replace("\login");
+        }
+    }
+
     render() {
         return (
-            <div>Home</div>
+            <div className="page-root">
+                <div className="left-column">
+                    <Selector options={this.options} active={this.state.type} />
+                </div>
+                <div className="center-column">
+                    renderChart()
+                </div>
+
+            </div>
         )
+    }
+
+    renderChart() {
+
+        switch (this.state.type) {
+            case hydra.selectorType.temperatureChart:
+                return (<TemperatureChart />)
+
+            case hydra.selectorType.dailyConsumption:
+                return (<DailyConsumptionChart />)
+        }
     }
 }
 
