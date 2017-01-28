@@ -28,7 +28,7 @@ export default class DailyConsumptionChart extends React.Component<{ data: hydra
 
     constructor(props) {
         super(props);
-        this.state = { chartData: [] };
+        this.state = { chartData: null };
     }
 
     generateChartData(rawData: hydra.detailsDatum[]) {

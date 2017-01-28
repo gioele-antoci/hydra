@@ -2,7 +2,8 @@ namespace hydra {
 
     export enum selectorType {
         temperatureChart,
-        dailyConsumption
+        dailyConsumption,
+        moneyChart
     }
 
     export interface selectorOption {
@@ -95,6 +96,14 @@ namespace hydra {
         static primaryTextColor = "#212121";
         static secondaryTextColor = "#757575";
         static dividerColor = "#BDBDBD";
+    }
+
+    export class eletricityCost {
+        static fixed = 0.4064;
+        static energyUntil30Kwh = 0.0571;
+        static energyAfter30Until50Kwh = 0.0868;
+        static energyAfter50KwhWinter = 0.621;
+        static energyAfter50KwhSummer = 0.378;
     }
 }
 

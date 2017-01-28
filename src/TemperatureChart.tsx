@@ -11,7 +11,7 @@ export default class TemperatureChart extends React.Component<{ data: hydra.deta
 
     constructor(props) {
         super(props);
-        this.state = { chartData: [] };
+        this.state = { chartData: null };
 
         this.options = {
             scales: {

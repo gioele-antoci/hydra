@@ -4,6 +4,7 @@ import * as moment from 'moment';
 import Selector from './Selector';
 import TemperatureChart from './TemperatureChart';
 import DailyConsumptionChart from './DailyConsumptionChart';
+import MoneyChart from './MoneyChart';
 import DatePicker from './DatePicker';
 
 import restHelper from './restHelper';
@@ -32,6 +33,11 @@ class Home extends React.Component<any, {
             type: hydra.selectorType.dailyConsumption,
             value: "Daily consumption",
             callback: () => { this.setState({ type: hydra.selectorType.dailyConsumption }) }
+        },        
+        {
+            type: hydra.selectorType.moneyChart,
+            value: "$ cost break down",
+            callback: () => { this.setState({ type: hydra.selectorType.moneyChart }) }
         }
     ];
 
@@ -119,6 +125,9 @@ class Home extends React.Component<any, {
 
             case hydra.selectorType.dailyConsumption:
                 return (<DailyConsumptionChart data={this.state.detailsData} />)
+
+                case hydra.selectorType.moneyChart:
+                return (<MoneyChart data={this.state.detailsData} />)
         }
     }
 }
