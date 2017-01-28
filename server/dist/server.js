@@ -72,7 +72,7 @@ var getSummaryData = function (cookie) {
 var getDetailsData = function (cookie, start, end) {
     return new Promise(function (resolve, reject) {
         request.get({
-            url: "https://www.hydroquebec.com/portail/fr/group/clientele/portrait-de-consommation?p_p_id=portraitConsommation_WAR_lswrb_INSTANCE_G4WcPdIy6LKl&p_p_lifecycle=2&p_p_resource_id=resourceObtenirDonneesQuotidiennesConsommation&dateDebutPeriode=" + moment(end).format("YYYY-MM-DD") + "&dateFinPeriode=" + moment(start).format("YYYY-MM-DD"),
+            url: "https://www.hydroquebec.com/portail/fr/group/clientele/portrait-de-consommation?p_p_id=portraitConsommation_WAR_lswrb_INSTANCE_G4WcPdIy6LKl&p_p_lifecycle=2&p_p_resource_id=resourceObtenirDonneesQuotidiennesConsommation&dateDebutPeriode=" + moment(start).format("YYYY-MM-DD") + "&dateFinPeriode=" + moment(end).format("YYYY-MM-DD"),
             method: "GET",
             headers: {
                 'Cookie': cookie
@@ -94,10 +94,10 @@ app.post('/login', function (req, res) {
     login(body.user, body.password)
         .then(function (cookie) {
         if (cookie) {
-            res.send(200);
+            res.sendStatus(200);
         }
         else {
-            res.send(401);
+            res.sendStatus(401);
         }
     });
 });

@@ -84,6 +84,18 @@ namespace hydra {
             codeEvemenentQuot: string;
         }
     }
+
+    //https://www.materialpalette.com/blue/deep-orange
+    export class colors {
+        static darkPrimaryColor = "#1976D2";
+        static defaultPrimaryColor = "#2196F3";
+        static lightPrimaryColor = "#BBDEFB";
+        static textPrimaryColor = "#FFFFFF";
+        static accentColor = "#FF5722";
+        static primaryTextColor = "#212121";
+        static secondaryTextColor = "#757575";
+        static dividerColor = "#BDBDBD";
+    }
 }
 
 export default hydra;

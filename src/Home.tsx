@@ -1,15 +1,27 @@
 import * as React from 'react';
+import * as moment from 'moment';
+
 import Selector from './Selector';
 import TemperatureChart from './TemperatureChart';
 import DailyConsumptionChart from './DailyConsumptionChart';
-import * as moment from 'moment';
+import DatePicker from './DatePicker';
 
 import restHelper from './restHelper';
 import hydra from './interfaces';
 
 import "./css/Home.css";
 
-class Home extends React.Component<any, { type: hydra.selectorType, summaryData?: hydra.summaryDatum[], detailsData?: hydra.detailsDatum[] }> {
+class Home extends React.Component<any, {
+    type: hydra.selectorType,
+    start?: moment.Moment,
+    end?: moment.Moment,
+    minStart?: moment.Moment,
+    detailsData?: hydra.detailsDatum[]
+}> {
+
+    // detailsData?: hydra.detailsDatum[] = [];
+    summaryData?: hydra.summaryDatum[] = [];
+
     options: hydra.selectorOption[] = [
         {
             type: hydra.selectorType.temperatureChart,
@@ -25,12 +37,25 @@ class Home extends React.Component<any, { type: hydra.selectorType, summaryData?
 
     constructor(props) {
         super(props);
-        this.state = { type: hydra.selectorType.temperatureChart };
+        const start = moment().subtract(30, "days");
+        this.state = {
+            type: hydra.selectorType.temperatureChart,
+            start,
+            end: moment(),
+            minStart: start
+        };
     }
 
     componentDidMount() {
         this.loadData();
     }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.start !== this.state.start || prevState.end !== this.state.end) {
+            this.loadData();
+        }
+    }
+
 
     loadData() {
         //redirect to login page
@@ -41,40 +66,50 @@ class Home extends React.Component<any, { type: hydra.selectorType, summaryData?
         // make request for summary data and details data
         // when all data is ready render components
         else {
-            restHelper.summary()
-                .then((response: hydra.summaryResponse) => {
-                    if (response.success) {
-                        this.setState({ summaryData: response.results });
-                    }
-                });
+            this.setState({ detailsData: null });
 
-            const now = moment();
-            restHelper.details(now.toDate(), now.subtract(30, "days").toDate())
+            restHelper.details(this.state.start.toDate(), this.state.end.toDate())
                 .then((response: hydra.detailsResponse) => {
                     if (response.success) {
                         this.setState({ detailsData: response.results });
                     }
                 });
+
+            restHelper.summary()
+                .then((response: hydra.summaryResponse) => {
+                    if (response.success) {
+                        this.summaryData = response.results;
+                        this.setState({ minStart: moment(response.results[response.results.length - 1].dateDebutPeriode) });
+                    }
+                });
+
         }
     }
 
+    onDatesChange(start: moment.Moment, end: moment.Moment) {
+        this.setState({
+            start,
+            end
+        });
+    }
+
     render() {
-        if (!this.state.summaryData || !this.state.detailsData) {
-            return <div>Loading...</div>;
-        }
-        else {
-            return (
-                <div className="page-root">
+
+        return (
+            <div className="page-root">
+                <div className="header">
+                    <DatePicker minStart={this.state.minStart} start={this.state.start} end={this.state.end} onChange={(start, end) => this.onDatesChange(start, end)} />
+                </div>
+                <div className="content">
                     <div className="left-column">
                         <Selector options={this.options} active={this.state.type} />
                     </div>
                     <div className="center-column">
                         {this.renderActiveChartComponent()}
                     </div>
-
                 </div>
-            )
-        }
+            </div>
+        )
     }
 
     renderActiveChartComponent() {
@@ -83,7 +118,7 @@ class Home extends React.Component<any, { type: hydra.selectorType, summaryData?
                 return (<TemperatureChart data={this.state.detailsData} />)
 
             case hydra.selectorType.dailyConsumption:
-                return (<DailyConsumptionChart data={this.state.detailsData}/>)
+                return (<DailyConsumptionChart data={this.state.detailsData} />)
         }
     }
 }
