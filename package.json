@@ -36,7 +36,6 @@
   },
   "scripts": {
     "start": "react-scripts-ts start",
-    "poststart": "tsc -p server && npm server/dist/server.js",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"

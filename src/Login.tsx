@@ -9,13 +9,13 @@ import './css/Login.css';
 class Login extends React.Component<any, { user: string, password: string }> {
     constructor(props: any) {
         super(props);
-        
+
         //autologin for debug purposes
         const localCredentials = localStorage.getItem("credentials");
         if (localCredentials) {
             const parsedCredentials = JSON.parse(localCredentials);
             this.state = { user: parsedCredentials.user, password: parsedCredentials.password };
-            
+
             this.login();
         }
 
@@ -30,11 +30,25 @@ class Login extends React.Component<any, { user: string, password: string }> {
 
     render() {
         return (
-            <form onSubmit={this.login.bind(this)} >
-                <LoginInput type="text" placeholder="Enter username" onChange={this.handleUsernameChange} />
-                <LoginInput type="password" placeholder="Enter password" onChange={this.handlePasswordChange} />
-                <button type="submit">GO</button>
-            </form >)
+            <div className="Login">
+                <video className="home-video" autoPlay muted loop poster={require("../public/dripping-tap.jpg")}>
+                    <source src={require("../public/dripping-tap.mp4")} type="video/mp4" />
+                    <source src={require("../public/dripping-tap.webm")} type="video/webm" />
+                    <source src={require("../public/dripping-tap.ogv")} type="video/ogg" />
+                </video>
+                <div className="title-container">
+                    <div className="title-label">Hydra</div>
+                    <div className="title-description">Curious how much leaving your tap open costs you?</div>
+                </div>
+                <div className="login-container">
+                    <form className="login-form" onSubmit={this.login.bind(this)} >
+                        <div className="login-form-label">Enter the credentials you use for HydroQuebec's' online portal</div>
+                        <LoginInput type="text" placeholder="Enter username" onChange={this.handleUsernameChange} />
+                        <LoginInput type="password" placeholder="Enter password" onChange={this.handlePasswordChange} />
+                        <button className="btn btn-large" type="submit">Show me</button>
+                    </form>
+                </div>
+            </div>)
     }
 
     handleUsernameChange = (e: Event) => {
@@ -58,7 +72,7 @@ class Login extends React.Component<any, { user: string, password: string }> {
         restHelper.login(this.state.user, this.state.password)
             .then(() => {
                 localStorage.setItem("credentials", JSON.stringify({ user: this.state.user, password: this.state.password }));
-                this.props.router.replace("/");
+                this.props.router.replace("/home");
             });
     }
 }

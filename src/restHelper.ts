@@ -2,7 +2,7 @@ import * as request from "request-promise";
 import hydra from './interfaces';
 
 class restHelper {
-    static debugServerURI = "http://localhost:3001";
+    static serverURI = process.env.NODE_ENV === "production" ? "https://hydra-qc-server.herokuapp.com/" : "http://localhost:3001";
     private static _user: string;
     private static _password: string;
     private static _loggedIn = false;
@@ -12,7 +12,7 @@ class restHelper {
     }
 
     static login(user: string, password: string): Promise<{}> {
-        const uri = `${this.debugServerURI}/login`;
+        const uri = `${this.serverURI}/login`;
         let code = 500;
         return new Promise((res, rej) => {
             request(
@@ -42,7 +42,7 @@ class restHelper {
             return null;
         }
 
-        const uri = `${this.debugServerURI}/data/summary`;
+        const uri = `${this.serverURI}/data/summary`;
         return new Promise((res, rej) => {
             request(
                 {
@@ -65,10 +65,10 @@ class restHelper {
             return null;
         }
 
-        const uri = `${this.debugServerURI}/data/details`;
+        const uri = `${this.serverURI}/data/details`;
         const data = JSON.stringify({ user: this._user, password: this._password, start, end });
-         
-          return new Promise((res, rej) => {
+
+        return new Promise((res, rej) => {
             request(
                 {
                     uri,

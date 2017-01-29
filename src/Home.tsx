@@ -66,7 +66,7 @@ class Home extends React.Component<any, {
     loadData() {
         //redirect to login page
         if (!restHelper.isLoggedIn()) {
-            this.props.router.replace("/login");
+            this.props.router.replace("/");
         }
 
         // make request for summary data and details data

@@ -36,8 +36,8 @@ class App extends React.Component<any, { loggedIn: boolean }> {
   render() {
     return (
       <Router history={browserHistory}>
-        <Route path="login" component={Login} />
-        <Route path="/" component={Home} />
+        <Route path="/" component={Login} />
+        <Route path="/home" component={Home} />
       </Router>
     )
   }

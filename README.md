@@ -1,5 +1,6 @@
 # Hydra
 
+## What it looks like
 ![Latest development screenshot](public/screenshot.JPG)
 
 Hydro Quebec has installed network-connected meters and provides on its website a log of the records.   
@@ -11,15 +12,40 @@ but ultimately I haven't been able to find more. Therefore the following remains
 said: **a fun project**. Use it as such.
 
 ## How did I make it work
-To avoid redirects I have decided to let NODE make the following request to the original site.
+I am programmatically querying hydroquebec's website and using the JSON their calls return.
+They don't offer an API (no surprise there) so the stability of such project is a bit brittle.
+To avoid server-side redirects I have decided to let NODE make the following request to the original site.
 This could perhaps be avoided with a frame or by cancelling the redirect but I decided for this
 easy (perhaps temporary) solution. As such HydroQuebec credentials will need to be passed over
 the wire which does not excite me a lot. At this point everything is running locally so I am
 not too concerned, but in the near future I may need to implement SSL-encryption to protect them.
 
-## What I'd like to see
-HydroQuebec doesn't seem to have in place triggers that notify users of outages in area of 
+## What I'd like to see done
+- HydroQuebec doesn't seem to have in place triggers that notify users of outages in area of 
 interest. Perhaps this could be offered with the assistante of Twilio.
+- Triggers when consumption is higher than defined threshold.
+- Next bill prediction based on whether forecast and previous consumption (this is a cool one!).
+
+## Eletricity cost calculation
+I followed [this](http://www.hydroquebec.com/publications/en/docs/distribution-tariff/distribution_tariff.pdf)
+document. Calculation is not perfect, based on the limited data I have available
+there is still a ~$5 offset with official value. Also HydroQuebec calculates the cost on average
+per month (their reps told me *they are moving towards a 'per day' calculation* but they are
+not there yet.). Hydra is.
+
+# Documentation
+
+## Technology used
+
+### Client
+- Typescript
+- REACT + Router
+- Webpack (module bundler)
+- ChartJS v2
+
+### [Server](https://github.com/gioele-antoci/hydra-server) (repository)
+ - [MEAN](http://mean.io/) stack (almost, no A)   
+ NodeJs + Express + MongoDB    
 
 ## Authenticating
 To login make a `POST` request to:   
