@@ -1,0 +1,45 @@
+.header {
+    top: 0;
+    position: absolute;
+    height: 5em;
+    width: 100%;
+    background: #757575;
+    color: white;
+    display: flex;
+}
+
+.options {
+    display: inline-block;
+    flex: 1;
+    align-self: center;
+    cursor: pointer;
+    font-size: 1.5em;
+}
+
+.header .logo {
+    text-align: center;
+    align-self: center;
+    flex: 1;
+    max-width: 4em;
+    margin: 0 1em;
+}
+
+.header .logo-inner {
+    border-width: 3px;
+}
+
+.option-item.active {
+    text-decoration: underline;
+}
+
+.option-item {
+    margin: 0 1em;
+}
+
+.option-item.disable {
+    cursor: default;
+}
+
+.option-item:hover {
+    text-decoration: underline;
+}

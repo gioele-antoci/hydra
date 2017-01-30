@@ -14,6 +14,8 @@ export default class TemperatureChart extends React.Component<{ data: hydra.deta
         this.state = { chartData: null };
 
         this.options = {
+            maintainAspectRatio: true,
+            responsive: true,
             scales: {
                 yAxes: [
                     {
@@ -85,7 +87,7 @@ export default class TemperatureChart extends React.Component<{ data: hydra.deta
             );
         }
         else {
-            return <div className="chart-loading">Loading...</div>;
+            return <div className="chart-loading spinner"></div>;
         }
     }
 }

@@ -37,12 +37,12 @@ class Login extends React.Component<any, { user: string, password: string }> {
                     <source src={require("../public/dripping-tap.ogv")} type="video/ogg" />
                 </video>
                 <div className="title-container">
-                    <div className="title-label">Hydra</div>
+                    <div className="title-label"><span className="logo"><span className="logo-inner">H</span>ydra</span></div>
                     <div className="title-description">Curious how much leaving your tap open costs you?</div>
                 </div>
                 <div className="login-container">
                     <form className="login-form" onSubmit={this.login.bind(this)} >
-                        <div className="login-form-label">Enter the credentials you use for HydroQuebec's' online portal</div>
+                        <div className="login-form-label">Enter the credentials you use for HydroQuebec's online portal</div>
                         <LoginInput type="text" placeholder="Enter username" onChange={this.handleUsernameChange} />
                         <LoginInput type="password" placeholder="Enter password" onChange={this.handlePasswordChange} />
                         <button className="btn btn-large" type="submit">Show me</button>

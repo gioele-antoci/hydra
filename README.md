@@ -1,5 +1,8 @@
 # Hydra
 
+
+## TL;DR No words, just gimme action!: [WEBSITE](https://gioele-antoci.github.io/hydra) <-- click here
+
 ## What it looks like
 ![Latest development screenshot](public/screenshot.JPG)
 
@@ -26,7 +29,7 @@ interest. Perhaps this could be offered with the assistante of Twilio.
 - Triggers when consumption is higher than defined threshold.
 - Next bill prediction based on whether forecast and previous consumption (this is a cool one!).
 
-## Eletricity cost calculation
+## Electricity cost calculation
 I followed [this](http://www.hydroquebec.com/publications/en/docs/distribution-tariff/distribution_tariff.pdf)
 document. Calculation is not perfect, based on the limited data I have available
 there is still a ~$5 offset with official value. Also HydroQuebec calculates the cost on average

@@ -46,8 +46,8 @@ export default class DatePicker extends React.Component<{ minStart: moment.Momen
         const { focusedInput, startDate, endDate } = this.state;
 
         return (
-            <div>
-                <ReactDates.DateRangePicker startDate={startDate} endDate={endDate} focusedInput={focusedInput}
+            <div className="daterange-picker-container">
+                <ReactDates.DateRangePicker className="DateRangePicker card" startDate={startDate} endDate={endDate} focusedInput={focusedInput}
                     onFocusChange={this.onFocusChange} onDatesChange={this.onDatesChange} isOutsideRange={this.isOutsideRange}
                     numberOfMonths={1} />
             </div>

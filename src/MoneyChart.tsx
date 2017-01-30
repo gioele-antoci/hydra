@@ -14,6 +14,8 @@ export default class MoneyChart extends React.Component<any, any> {
         this.state = { chartData: null };
 
         this.options = {
+            maintainAspectRatio: true,
+            responsive: true,
             scales: {
                 yAxes: [
                     {
@@ -120,7 +122,7 @@ export default class MoneyChart extends React.Component<any, any> {
             );
         }
         else {
-            return <div className="chart-loading">Loading...</div>;
+            return <div className="chart-loading spinner"></div>;
         }
     }
 }

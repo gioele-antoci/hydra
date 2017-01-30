@@ -1,3 +1,11 @@
+.daterange-picker-container {
+    margin-top: 1em;
+}
+
 .DateRangePicker{
     font-size: 1rem;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99;
 }

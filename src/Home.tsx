@@ -5,6 +5,7 @@ import Selector from './Selector';
 import TemperatureChart from './TemperatureChart';
 import DailyConsumptionChart from './DailyConsumptionChart';
 import MoneyChart from './MoneyChart';
+import Header from './Header';
 import DatePicker from './DatePicker';
 
 import restHelper from './restHelper';
@@ -33,7 +34,7 @@ class Home extends React.Component<any, {
             type: hydra.selectorType.dailyConsumption,
             value: "Daily consumption",
             callback: () => { this.setState({ type: hydra.selectorType.dailyConsumption }) }
-        },        
+        },
         {
             type: hydra.selectorType.moneyChart,
             value: "$ cost break down",
@@ -100,18 +101,19 @@ class Home extends React.Component<any, {
     }
 
     render() {
-
         return (
             <div className="page-root">
-                <div className="header">
-                    <DatePicker minStart={this.state.minStart} start={this.state.start} end={this.state.end} onChange={(start, end) => this.onDatesChange(start, end)} />
-                </div>
+                <Header />
                 <div className="content">
                     <div className="left-column">
                         <Selector options={this.options} active={this.state.type} />
                     </div>
                     <div className="center-column">
-                        {this.renderActiveChartComponent()}
+                        <DatePicker minStart={this.state.minStart} start={this.state.start} end={this.state.end} onChange={(start, end) => this.onDatesChange(start, end)} />
+                        <div className="chart-label">{this.renderActiveChartLabel()}</div>
+                        <div className={`chart-content ${this.state.detailsData ? "" : "loading"}`}>
+                            <div className={`chart-container ${this.state.detailsData ? "card" : ""}`}>{this.renderActiveChartComponent()}</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -126,8 +128,21 @@ class Home extends React.Component<any, {
             case hydra.selectorType.dailyConsumption:
                 return (<DailyConsumptionChart data={this.state.detailsData} />)
 
-                case hydra.selectorType.moneyChart:
+            case hydra.selectorType.moneyChart:
                 return (<MoneyChart data={this.state.detailsData} />)
+        }
+    }
+
+    renderActiveChartLabel() {
+        switch (this.state.type) {
+            case hydra.selectorType.temperatureChart:
+                return "Analyze the correlation between the falling temperature and the raising consumption. Note that during the winter the temperature axis is reversed for an easier visual correlation";
+
+            case hydra.selectorType.dailyConsumption:
+                return "Consumption and temperature are here grouped by week day. Do you spend more time at home during the weekend? Does this reflect on your consumption? And why wednesdeys are colder than any other day?";
+
+            case hydra.selectorType.moneyChart:
+                return "TIL: Did you know Hydro Quebec applyes a different rate per kw/h when you consume more than 30kw/h in a day?. Check how much you spend per day";
         }
     }
 }

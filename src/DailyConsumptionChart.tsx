@@ -8,6 +8,9 @@ export default class DailyConsumptionChart extends React.Component<{ data: hydra
 
     data: Chart.LinearChartData;
     options: Chart.ChartOptions = {
+        maintainAspectRatio: true,
+        responsive: true,
+
         scales: {
             yAxes: [
                 {
@@ -95,7 +98,7 @@ export default class DailyConsumptionChart extends React.Component<{ data: hydra
 
         }
         else {
-            return <div className="chart-loading">Loading...</div>;
+            return <div className="chart-loading spinner"></div>;
         }
     }
 }
