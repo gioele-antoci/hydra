@@ -5,7 +5,7 @@ import hydra from './interfaces';
 
 class Selector extends React.Component<{ options: hydra.selectorOption[], active: hydra.selectorType }, any> {
 
-    constructor(props: hydra.selectorOption[]) {
+    constructor(props: { options: hydra.selectorOption[], active: hydra.selectorType }) {
         super(props);
     }
 

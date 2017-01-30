@@ -52,10 +52,10 @@ class Login extends React.Component<any, { user: string, password: string }> {
     }
 
     handleUsernameChange = (e: Event) => {
-        this.setState({ user: (e.target as HTMLElement).value });
+        this.setState({ user: (e.target as HTMLInputElement).value });
     }
     handlePasswordChange = (e: Event) => {
-        this.setState({ password: (e.target as HTMLElement).value });
+        this.setState({ password: (e.target as HTMLInputElement).value });
     }
 
     login = (e?: Event) => {

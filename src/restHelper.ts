@@ -2,7 +2,7 @@ import * as request from "request-promise";
 import hydra from './interfaces';
 
 class restHelper {
-    static serverURI = process.env.NODE_ENV === "production" ? "https://hydra-qc-server.herokuapp.com/" : "http://localhost:3001";
+    static serverURI = process.env.NODE_ENV === "production" ? "https://hydra-qc-server.herokuapp.com" : "http://localhost:3001";
     private static _user: string;
     private static _password: string;
     private static _loggedIn = false;
