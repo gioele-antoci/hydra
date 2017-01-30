@@ -20,7 +20,7 @@
 
 // export default App;
 import * as React from 'react';
-import { Router, Route, browserHistory } from 'react-router';
+import { Router, Route, browserHistory,hashHistory } from 'react-router';
 // import routes from './utils/routes'
 import Login from "./Login"
 import Home from "./Home"
@@ -35,7 +35,7 @@ class App extends React.Component<any, { loggedIn: boolean }> {
 
   render() {
     return (
-      <Router history={browserHistory}>
+      <Router history={hashHistory}>
         <Route path="/" component={Login} />
         <Route path="/home" component={Home} />
       </Router>
