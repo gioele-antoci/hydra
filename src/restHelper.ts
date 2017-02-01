@@ -1,14 +1,32 @@
 import * as request from "request-promise";
+import * as moment from 'moment';
 import hydra from './interfaces';
 
 class restHelper {
-    static serverURI = process.env.NODE_ENV === "production" ? "https://hydra-qc-server.herokuapp.com" : "http://localhost:3001";
+    static serverURI = restHelper.isProduction() ? "https://hydra-qc-server.herokuapp.com" : "http://localhost:3001";
     private static _user: string;
     private static _password: string;
     private static _loggedIn = false;
+    private static _sandboxMode = false;
 
     static isLoggedIn(): boolean {
         return this._loggedIn;
+    }
+
+    static isProduction() {
+        return process.env.NODE_ENV === "production";
+    }
+
+    static isDebug() {
+        return process.env.NODE_ENV !== "production";
+    }
+
+    static setSandbox() {
+        this._sandboxMode = true;
+    }
+
+    static isSandbox(): boolean {
+        return this._sandboxMode;
     }
 
     static login(user: string, password: string): Promise<{}> {
@@ -36,9 +54,12 @@ class restHelper {
         });
     }
 
-
     static summary(): Promise<hydra.summaryResponse> {
-        if (!this.isLoggedIn()) {
+        if (this._sandboxMode) {
+            return Promise.resolve(hydra.sandboxData.summaryData);
+        }
+
+        else if (!this.isLoggedIn()) {
             return null;
         }
 
@@ -61,6 +82,18 @@ class restHelper {
     }
 
     static details(start: Date, end: Date): Promise<hydra.detailsResponse> {
+        if (this._sandboxMode) {
+            const startMom = moment(start).startOf('day');
+            const endMom = moment(end).startOf('day');
+            const data = JSON.parse(JSON.stringify(hydra.sandboxData.detailsData));
+            data.results = hydra.sandboxData.detailsData.results.filter(value => {
+                const mom = moment(value.courant.dateJourConso);
+                return mom.isSameOrAfter(startMom) && mom.isSameOrBefore(endMom);
+            });
+
+            return Promise.resolve(data);
+        }
+
         if (!this.isLoggedIn()) {
             return null;
         }

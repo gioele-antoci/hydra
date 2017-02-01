@@ -18,7 +18,9 @@ class Home extends React.Component<any, {
     start?: moment.Moment,
     end?: moment.Moment,
     minStart?: moment.Moment,
-    detailsData?: hydra.detailsDatum[]
+    maxEnd?: moment.Moment,
+    detailsData?: hydra.detailsDatum[],
+    disabled?: boolean
 }> {
 
     // detailsData?: hydra.detailsDatum[] = [];
@@ -45,52 +47,61 @@ class Home extends React.Component<any, {
     constructor(props) {
         super(props);
         const start = moment().subtract(30, "days");
+        const end = moment();
         this.state = {
             type: hydra.selectorType.temperatureChart,
             start,
-            end: moment(),
-            minStart: start
+            end,
+            minStart: start,
+            maxEnd: end,
+            disabled: true
         };
     }
 
     componentDidMount() {
-        this.loadData();
+        const promise = this.loadData();
+        // the very first load, read the latest value and set it as the maximum the date range can ever go.
+        // during the first load we in fact try to render until today's date. HydroQuebec will return the last day available
+        // add a day because react.dates is implemented in an exclusive way
+        promise.then(() =>
+            this.setState({ maxEnd: moment(this.state.detailsData[this.state.detailsData.length - 1].courant.dateJourConso).add(1, "days") }));
+
     }
 
     componentDidUpdate(prevProps, prevState) {
+        //only if different
         if (prevState.start !== this.state.start || prevState.end !== this.state.end) {
             this.loadData();
         }
     }
 
-
-    loadData() {
-        //redirect to login page
-        if (!restHelper.isLoggedIn()) {
-            this.props.router.replace("/");
-        }
-
+    loadData(): Promise<void> {
         // make request for summary data and details data
         // when all data is ready render components
-        else {
-            this.setState({ detailsData: null });
+        this.setState({ detailsData: null, disabled: true });
 
-            restHelper.details(this.state.start.toDate(), this.state.end.toDate())
-                .then((response: hydra.detailsResponse) => {
-                    if (response.success) {
-                        this.setState({ detailsData: response.results });
-                    }
-                });
+        const promises = [];
+        promises.push(restHelper.details(this.state.start.toDate(), this.state.end.toDate())
+            .then((response: hydra.detailsResponse) => {
+                if (response.success) {
+                    this.setState({ detailsData: response.results });
+                    Promise.resolve();
+                }
+            }));
 
-            restHelper.summary()
-                .then((response: hydra.summaryResponse) => {
-                    if (response.success) {
-                        this.summaryData = response.results;
-                        this.setState({ minStart: moment(response.results[response.results.length - 1].dateDebutPeriode) });
-                    }
-                });
+        promises.push(restHelper.summary()
+            .then((response: hydra.summaryResponse) => {
+                if (response.success) {
+                    this.summaryData = response.results;
+                    this.setState({ minStart: moment(response.results[response.results.length - 1].dateDebutPeriode) });
+                    Promise.resolve();
+                }
+            }));
 
-        }
+        return Promise.all(promises).then(x => {
+            this.setState({ disabled: false });
+            Promise.resolve();
+        });
     }
 
     onDatesChange(start: moment.Moment, end: moment.Moment) {
@@ -109,7 +120,8 @@ class Home extends React.Component<any, {
                         <Selector options={this.options} active={this.state.type} />
                     </div>
                     <div className="center-column">
-                        <DatePicker minStart={this.state.minStart} start={this.state.start} end={this.state.end} onChange={(start, end) => this.onDatesChange(start, end)} />
+                        <DatePicker disabled={this.state.disabled} minStart={this.state.minStart} maxEnd={this.state.maxEnd} start={this.state.start} end={this.state.end}
+                            onChange={(start, end) => this.onDatesChange(start, end)} />
                         <div className="chart-label">{this.renderActiveChartLabel()}</div>
                         <div className={`chart-content ${this.state.detailsData ? "" : "loading"}`}>
                             <div className={`chart-container ${this.state.detailsData ? "card" : ""}`}>{this.renderActiveChartComponent()}</div>
@@ -142,7 +154,7 @@ class Home extends React.Component<any, {
                 return "Consumption and temperature are here grouped by week day. Do you spend more time at home during the weekend? Does this reflect on your consumption? And why wednesdeys are colder than any other day?";
 
             case hydra.selectorType.moneyChart:
-                return "TIL: Did you know Hydro Quebec applyes a different rate per kw/h when you consume more than 30kw/h in a day?. Check how much you spend per day";
+                return "TIL: Did you know Hydro Quebec applyes a different rate per kw/h when you consume more than 30kw/h? Check how much you spend per day, how much/often are you exceeding the 30kw/h threshold";
         }
     }
 }

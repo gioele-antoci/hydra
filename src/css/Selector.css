@@ -9,7 +9,7 @@
 }
 
 .feature-selector .collection-item {
-    border: 0;
+    border: 1px solid lightgrey !important;
     margin: 1em 0;
     font-size: 1.5em;
     padding: 1em;

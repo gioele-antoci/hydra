@@ -5,7 +5,14 @@ import * as ReactDates from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 import * as moment from 'moment';
 
-export default class DatePicker extends React.Component<{ minStart: moment.Moment, start: moment.Moment, end: moment.Moment, onChange: (startDate: moment.Moment, endDate: moment.Moment) => void }, any> {
+export default class DatePicker extends React.Component<{
+    disabled?: boolean,
+    minStart: moment.Moment,
+    maxEnd: moment.Moment,
+    start: moment.Moment,
+    end: moment.Moment,
+    onChange: (startDate: moment.Moment, endDate: moment.Moment) => void
+}, { focusedInput: any, startDate: moment.Moment, endDate: moment.Moment }> {
 
     newStart: moment.Moment;
     newEnd: moment.Moment;
@@ -21,7 +28,6 @@ export default class DatePicker extends React.Component<{ minStart: moment.Momen
         this.onDatesChange = this.onDatesChange.bind(this);
         this.onFocusChange = this.onFocusChange.bind(this);
         this.isOutsideRange = this.isOutsideRange.bind(this);
-
     }
 
     onDatesChange({ startDate, endDate }) {
@@ -39,7 +45,7 @@ export default class DatePicker extends React.Component<{ minStart: moment.Momen
     }
 
     isOutsideRange = (day?: moment.Moment) => {
-        return !ReactDates.isInclusivelyAfterDay(day, this.props.minStart) || ReactDates.isInclusivelyAfterDay(day, this.props.end);
+        return !ReactDates.isInclusivelyAfterDay(day, this.props.minStart) || ReactDates.isInclusivelyAfterDay(day, this.props.maxEnd);
     }
 
     render() {
@@ -49,7 +55,7 @@ export default class DatePicker extends React.Component<{ minStart: moment.Momen
             <div className="daterange-picker-container">
                 <ReactDates.DateRangePicker className="DateRangePicker card" startDate={startDate} endDate={endDate} focusedInput={focusedInput}
                     onFocusChange={this.onFocusChange} onDatesChange={this.onDatesChange} isOutsideRange={this.isOutsideRange}
-                    numberOfMonths={1} />
+                    numberOfMonths={2} disabled={this.props.disabled} />
             </div>
         )
     }

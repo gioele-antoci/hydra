@@ -6,12 +6,14 @@ import hydra from './interfaces';
 
 import './css/Login.css';
 
-class Login extends React.Component<any, { user: string, password: string }> {
+class Login extends React.Component<{ router: any }, { user: string, password: string }> {
     constructor(props: any) {
         super(props);
 
-        //autologin for debug purposes
-        const localCredentials = localStorage.getItem("credentials");
+        let localCredentials = null;
+        if (restHelper.isDebug()) {
+            localCredentials = localStorage.getItem("credentials");
+        }
         if (localCredentials) {
             const parsedCredentials = JSON.parse(localCredentials);
             this.state = { user: parsedCredentials.user, password: parsedCredentials.password };
@@ -26,7 +28,6 @@ class Login extends React.Component<any, { user: string, password: string }> {
             };
         }
     }
-
 
     render() {
         return (
@@ -45,10 +46,17 @@ class Login extends React.Component<any, { user: string, password: string }> {
                         <div className="login-form-label">Enter the credentials you use for HydroQuebec's online portal</div>
                         <LoginInput type="text" placeholder="Enter username" onChange={this.handleUsernameChange} />
                         <LoginInput type="password" placeholder="Enter password" onChange={this.handlePasswordChange} />
-                        <button className="btn btn-large" type="submit">Show me</button>
+                        <button className="btn btn-large" type="submit">Enter</button>
                     </form>
                 </div>
-            </div>)
+
+                <div className="sandbox-container">
+                    <div className="sandbox-label">Don't trust me? Wanna first check things out? Not from "La Belle Province?</div>
+                    <div className="sandbox-label">I have pre-loaded my own data for you to play with!</div>
+                    <button className="btn btn-large sandbox-button" onClick={() => this.onSandboxClick()}>Show me</button>
+
+                </div>
+            </div >)
     }
 
     handleUsernameChange = (e: Event) => {
@@ -59,7 +67,6 @@ class Login extends React.Component<any, { user: string, password: string }> {
     }
 
     login = (e?: Event) => {
-
         if (e) {
             e.preventDefault();
         }
@@ -71,16 +78,23 @@ class Login extends React.Component<any, { user: string, password: string }> {
 
         restHelper.login(this.state.user, this.state.password)
             .then(() => {
-                localStorage.setItem("credentials", JSON.stringify({ user: this.state.user, password: this.state.password }));
+                if (restHelper.isDebug()) {
+                    localStorage.setItem("credentials", JSON.stringify({ user: this.state.user, password: this.state.password }));
+                }
                 this.props.router.replace("/home");
             });
+    }
+
+    onSandboxClick = () => {
+        restHelper.setSandbox();
+        this.props.router.replace("/home");
     }
 }
 
 class LoginInput extends React.Component<any, any> {
     render() {
         return (
-            < input type={this.props.type} onChange={this.props.onChange.bind(this)} placeholder={this.props.placeholder} autoFocus={this.props.type === "text"} />
+            <input type={this.props.type} onChange={this.props.onChange.bind(this)} placeholder={this.props.placeholder} autoFocus={this.props.type === "text"} />
         )
     }
 }

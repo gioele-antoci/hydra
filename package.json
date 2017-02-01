@@ -17,7 +17,7 @@
     "@types/node": "^7.0.3",
     "@types/react": "^15.0.2",
     "@types/react-dom": "^0.14.21",
-    "@types/react-router": "^2.0.46",
+    "@types/react-router": "^3.0.0",
     "@types/request": "^0.0.39",
     "@types/request-promise": "^4.1.33",
     "bluebird": "^3.4.7",
