@@ -151,10 +151,10 @@ class Home extends React.Component<any, {
                 return "Analyze the correlation between the falling temperature and the raising consumption. Note that during the winter the temperature axis is reversed for an easier visual correlation";
 
             case hydra.selectorType.dailyConsumption:
-                return "Consumption and temperature are here grouped by week day. Do you spend more time at home during the weekend? Does this reflect on your consumption? And why wednesdeys are colder than any other day?";
+                return "Consumption and temperature are here grouped by week day. Do you spend more time at home during the weekend? Does this reflect on your consumption? And why Wednesdey is the warmest day?";
 
             case hydra.selectorType.moneyChart:
-                return "TIL: Did you know Hydro Quebec applyes a different rate per kw/h when you consume more than 30kw/h? Check how much you spend per day, how much/often are you exceeding the 30kw/h threshold";
+                return "TIL: Did you know Hydro Quebec applies a different rate per kw/h when you consume more than 30kw/h? Check how much you spend per day, how much/often are you exceeding the 30kw/h threshold";
         }
     }
 }

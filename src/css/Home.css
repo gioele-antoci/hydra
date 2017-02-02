@@ -75,6 +75,12 @@
     animation: spin 1s ease-in-out infinite;
 }
 
+.spin {
+    -webkit-animation: spin .3s ease-in-out infinite;
+    -moz-animation: spin .3s ease-in-out infinite;
+    animation: spin 1s ease-in-out infinite;
+}
+
 @-moz-keyframes spin {
     from {
         -moz-transform: rotate(0deg);

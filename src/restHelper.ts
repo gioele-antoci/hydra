@@ -48,9 +48,7 @@ class restHelper {
                     this._loggedIn = true;
                     res();
                 })
-                .catch(() => {
-                    rej();
-                });
+                .catch(reason => rej(reason));
         });
     }
 
