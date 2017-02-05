@@ -1,0 +1,17 @@
+.money-chart-info {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.total-cost, .average-temperature {
+    padding: .5em;
+    color: grey;
+    display: inline-block;
+    margin: 0 1em;
+    margin-bottom: 1em;
+}
+
+.total-cost i, .average-temperature i {
+    display: inline;
+    vertical-align: middle;
+}

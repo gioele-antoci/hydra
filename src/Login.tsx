@@ -81,7 +81,10 @@ class Login extends React.Component<{ router: any }, { user: string, password: s
         }
 
         this.setState({ ajaxOut: true });
-        this.video.playbackRate = 10;
+
+        if (this.video) {
+            this.video.playbackRate = 10;
+        }
         restHelper.login(this.state.user, this.state.password)
             .then(() => {
                 if (restHelper.isDebug()) {
@@ -91,7 +94,10 @@ class Login extends React.Component<{ router: any }, { user: string, password: s
             })
             .catch(reason => {
                 this.setState({ ajaxOut: false, error: true });
-                this.video.playbackRate = 1;
+
+                if (this.video) {
+                    this.video.playbackRate = 1;
+                }
             });
     }
 

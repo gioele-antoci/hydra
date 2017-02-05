@@ -81,7 +81,7 @@ export default class TemperatureChart extends React.Component<{ data: hydra.deta
 
     render() {
         if (this.state.chartData) {
-            return (<div>
+            return (<div className="card">
                 <ChartReact.Bar data={this.state.chartData} options={this.options} />
             </div>
             );

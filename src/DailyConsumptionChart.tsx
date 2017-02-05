@@ -91,11 +91,11 @@ export default class DailyConsumptionChart extends React.Component<{ data: hydra
 
     render() {
         if (this.state.chartData) {
-            return (<div>
-                <ChartReact.Bar data={this.state.chartData} options={this.options} />
-            </div>
+            return (
+                <div className="card">
+                    <ChartReact.Bar data={this.state.chartData} options={this.options} />
+                </div>
             );
-
         }
         else {
             return <div className="chart-loading spinner"></div>;

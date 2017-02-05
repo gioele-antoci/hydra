@@ -124,7 +124,7 @@ class Home extends React.Component<any, {
                             onChange={(start, end) => this.onDatesChange(start, end)} />
                         <div className="chart-label">{this.renderActiveChartLabel()}</div>
                         <div className={`chart-content ${this.state.detailsData ? "" : "loading"}`}>
-                            <div className={`chart-container ${this.state.detailsData ? "card" : ""}`}>{this.renderActiveChartComponent()}</div>
+                            <div className={`chart-container`}>{this.renderActiveChartComponent()}</div>
                         </div>
                     </div>
                 </div>
