@@ -20,8 +20,10 @@ They don't offer an API (no surprise there) so the stability of such project is 
 To avoid server-side redirects I have decided to let NODE make the following request to the original site.
 This could perhaps be avoided with a frame or by cancelling the redirect but I decided for this
 easy (perhaps temporary) solution. As such HydroQuebec credentials will need to be passed over
-the wire which does not excite me a lot. At this point everything is running locally so I am
-not too concerned, but in the near future I may need to implement SSL-encryption to protect them.
+the wire which does not excite me a lot. ~~At this point everything is running locally so I am
+not too concerned, but in the near future I may need to implement SSL-encryption to protect them.~~
+I submitted the project to github pages which is protected by SSL encryption. Heroku (which will make the requests 
+to HydroQuebec's site) is also protected by SSL so there should be no room for MITM attacks.
 
 ## What I'd like to see done
 - HydroQuebec doesn't seem to have in place triggers that notify users of outages in area of 
