@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as moment from 'moment';
+import * as $ from 'jquery';
 
 import Selector from './Selector';
 import TemperatureChart from './TemperatureChart';
@@ -111,12 +112,29 @@ class Home extends React.Component<any, {
         });
     }
 
+    test() {
+        const cred = JSON.parse(localStorage.getItem("credentials"));
+        $.ajax({
+            url: `https://www.hydroquebec.com/portail/web/clientele/authentification?p_auth=EbW90P8A&p_p_id=58&p_p_lifecycle=1&p_p_state=maximized&_58_struts_action=/login/login&_58_action=login`,
+            method: "POST",
+            data: `login=${cred.user}&_58_password=${cred.password}`,
+            dataType: 'jsonp',
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+
     render() {
         return (
             <div className="page-root">
                 <Header />
                 <div className="content">
                     <div className="left-column">
+                        <button className={restHelper.isProduction() ? "hidden" : ""} onClick={() => this.test()}>Test me</button>
                         <Selector options={this.options} active={this.state.type} />
                     </div>
                     <div className="center-column">
@@ -128,6 +146,7 @@ class Home extends React.Component<any, {
                         </div>
                     </div>
                 </div>
+
             </div>
         )
     }
