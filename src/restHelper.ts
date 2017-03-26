@@ -115,6 +115,15 @@ class restHelper {
                 .catch(error => rej(error));
         });
     }
+
+    static temperatureSanitizer(datum: hydra.detailsDatum): number {
+        if (Math.abs(datum.courant.tempMoyenneQuot) > 100) {
+            return (datum.courant.echelleMaxTemp + datum.courant.echelleMinTemp) / 2;
+        }
+        else {
+            return datum.courant.tempMoyenneQuot;
+        }
+    }
 }
 
 export default restHelper;

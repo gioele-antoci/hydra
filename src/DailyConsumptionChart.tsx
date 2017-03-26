@@ -4,6 +4,8 @@ import * as ChartReact from 'react-chartjs-2';
 import * as Chart from "@types/chart.js";
 import * as moment from 'moment';
 
+import restHelper from './restHelper';
+
 export default class DailyConsumptionChart extends React.Component<{ data: hydra.detailsDatum[] }, { chartData: Chart.LinearChartData }> {
 
     data: Chart.LinearChartData;
@@ -49,7 +51,7 @@ export default class DailyConsumptionChart extends React.Component<{ data: hydra
             }
 
             processedData[key].conso += val.courant.consoTotalQuot;
-            processedData[key].temp += val.courant.tempMoyenneQuot;
+            processedData[key].temp += restHelper.temperatureSanitizer(val);
             processedData[key].instances++;
         });
 

@@ -1,7 +1,7 @@
 # Hydra
 
 
-## TL;DR No words, just gimme action!: [WEBSITE](https://gioele-antoci.github.io/hydra) <-- click here
+-## TL;DR No words, just gimme action!: [WEBSITE](https://gioele-antoci.github.io/hydra) <-- click here
 
 ## What it looks like
 ![Latest development screenshot](public/screenshot.JPG)

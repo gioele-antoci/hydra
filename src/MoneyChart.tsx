@@ -5,6 +5,7 @@ import * as Chart from "@types/chart.js";
 import * as moment from 'moment';
 
 import "./css/MoneyChart.css";
+import restHelper from './restHelper';
 
 export default class MoneyChart extends React.Component<{ data: hydra.detailsDatum[] }, { chartData: Chart.LinearChartData, fullCost?: number, averageTemperature?: number }> {
 
@@ -100,7 +101,7 @@ export default class MoneyChart extends React.Component<{ data: hydra.detailsDat
                 (this.getEnergyQuantity(x.courant.consoTotalQuot, 0, 30) * hydra.eletricityCost.energyUntil30Kwh) +
                 (this.getEnergyQuantity(x.courant.consoTotalQuot, 30) * hydra.eletricityCost.energyAfter30Until50Kwh);
 
-            averageTemp += x.courant.tempMoyenneQuot;
+            averageTemp += restHelper.temperatureSanitizer(x);
         });
 
         this.setState({ fullCost: this.round(fullCost), averageTemperature: this.round(averageTemp / rawData.length) });
@@ -115,7 +116,7 @@ export default class MoneyChart extends React.Component<{ data: hydra.detailsDat
                 datasets: [
                     {
                         type: 'line',
-                        data: rawData.map(val => val.courant.tempMoyenneQuot),
+                        data: rawData.map(val => restHelper.temperatureSanitizer(val)),
                         borderColor: hydra.colors.accentColor,
                         label: 'Average temperature',
                         yAxisID: 'y-axis-2',
@@ -171,7 +172,7 @@ export default class MoneyChart extends React.Component<{ data: hydra.detailsDat
         if (this.state.chartData) {
             return (
                 <div>
-                    <div className="money-chart-info"> 
+                    <div className="money-chart-info">
                         <span className="total-cost card"><i className="material-icons">attach_money</i>Cost for the period selected: ${this.state.fullCost}</span>
                         <span className="average-temperature card"><i className="material-icons">ac_unit</i>Average temperature for the period selected: {this.state.averageTemperature}˚</span>
                     </div>

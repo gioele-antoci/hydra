@@ -3,6 +3,7 @@ import hydra from './interfaces';
 import * as ChartReact from 'react-chartjs-2';
 import * as Chart from "@types/chart.js";
 import * as moment from 'moment';
+import restHelper from './restHelper';
 
 export default class TemperatureChart extends React.Component<{ data: hydra.detailsDatum[] }, { chartData: Chart.LinearChartData }> {
 
@@ -59,7 +60,7 @@ export default class TemperatureChart extends React.Component<{ data: hydra.deta
                 datasets: [
                     {
                         type: 'line',
-                        data: rawData.map(val => val.courant.tempMoyenneQuot),
+                        data: rawData.map(val => restHelper.temperatureSanitizer(val)),
                         borderColor: hydra.colors.accentColor,
                         label: 'Average temperature',
                         yAxisID: 'y-axis-2',
